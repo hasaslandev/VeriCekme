@@ -1,4 +1,6 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.Identity.Client;
 
 namespace VeriCekme
 {
@@ -28,8 +30,23 @@ namespace VeriCekme
             //Console.WriteLine();
             //paragraphs.ToList().ForEach(i=> Console.WriteLine(i.InnerHtml));
             Site site = new Site();
-            site.cekilenVeri();
+            site.CekilenVeri();
+            Repo repo = new Repo();
+            var result = repo.GetAll(x => x.Location == "");
+            foreach ( var op in result )
+            {
+                repo.Delete(op);
+            }
 
+
+
+        }
+
+       public void veritabaniEkleme(AirCrash airCrash)
+        {
+            Repo repo = new Repo();
+
+            repo.UpdateAsync(airCrash);
         }
     }
 }
